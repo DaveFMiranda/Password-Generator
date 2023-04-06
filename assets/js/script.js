@@ -11,39 +11,36 @@ var charArrSpecials = ["!", "\"", "#", "$", "%", "&", "'", "(", ")", "*", "+", "
 // The function that generates a password.
 function generatePassword() {
   //Asks for the length of the password and ensures it's an integer between 8 and 128
-  let length = parseInt(prompt("How many characters long do you want your password to be? (enter a number between 8 and 128)"));
-  while (!(length >= 8) || !(length <= 128)) {
-    length = parseInt(prompt("Your password must be between 8 and 128 characters long. Please enter a number between 8 and 128."));
-  }
+  do {
+    var length = parseInt(prompt("How many characters long do you want your password to be? (enter a number between 8 and 128)"))
+    if ((length >= 8) && (length <= 128)) {
+      break;
+    }
+    alert("Please pick a number between 8 and 128.");
+    if (prompt === null) {
+      return;
+    }
+    } while (true)
+
+// Could add an escape valve here by adding "q to quit"
 
   // A series of four questions to determine which characters should be included in the password
-  var promptLowers = prompt ("Do you want your password to include at least one lowercase character? (Enter yes or no.)")
-  var wantsLowers = false;
-  if (promptLowers === "Y" || promptLowers === "yes" || promptLowers === "y" || promptLowers === "Yes" || promptLowers === "YES") {
-    wantsLowers = true;
-  } 
+  var wantsLowers = confirm ("Do you want your password to include at least one lowercase character?")
   console.log(wantsLowers);
 
-  var promptUppers = prompt ("Do you want your password to include at least one uppercase character? (Enter yes or no.)")
-  var wantsUppers = false;
-  if (promptUppers === "Y" || promptUppers === "yes" || promptUppers === "y" || promptUppers === "Yes" || promptUppers === "YES") {
-    wantsUppers = true;
-  } 
+  var wantsUppers = confirm ("Do you want your password to include at least one uppercase character?")
   console.log(wantsUppers);
 
-  var promptNumbers = prompt ("Do you want your password to include at least one number? (Enter yes or no.)")
-  var wantsNumbers = false;
-  if (promptNumbers === "Y" || promptNumbers === "yes" || promptNumbers === "y" || promptNumbers === "Yes" || promptNumbers === "YES") {
-    wantsNumbers = true;
-  } 
+  var wantsNumbers = confirm ("Do you want your password to include at least one number?")
   console.log(wantsNumbers);
 
-  var promptSpecials = prompt ("Do you want your password to include at least one special character? (Enter yes or no.)")
-  var wantsSpecials = false;
-  if (promptSpecials === "Y" || promptSpecials === "yes" || promptSpecials === "y" || promptSpecials === "Yes" || promptSpecials === "YES") {
-    wantsSpecials = true;
-  } 
+  var wantsSpecials = confirm ("Do you want your password to include at least one special character?")
   console.log(wantsSpecials);
+
+  // Returns an error message if the user doesn't select at least one set of characters.
+  if (wantsLowers == false && wantsUppers == false && wantsNumbers == false && wantsSpecials == false) {
+    alert("Please pick at least one category of characters.");
+}
 
   // Creates the pool of potential password characters based on the responses to the questions above.
   var characterPool = [];
@@ -60,11 +57,33 @@ function generatePassword() {
     characterPool = characterPool.concat(charArrSpecials);
   }
   //Creates an array to hold the characters generated.
-  var passwordArray = new Array(length);
+  var passwordArray = new Array;
 
-  //Fills the array with characters.
-  passwordArray = [];
-  for (var i = 0; i < length; i++) {
+  //Ensures the password has at least one of each category selected by the user.
+  if (wantsLowers) {
+    var randomLowers = Math.floor(Math.random() * charArrLowers.length)
+    passwordArray.push(charArrLowers[randomLowers]);
+  }
+
+  if (wantsUppers) {
+    var randomUppers = Math.floor(Math.random() * charArrUppers.length)
+    passwordArray.push(charArrUppers[randomUppers]);
+  }
+
+  if (wantsNumbers) {
+    var randomNumbers = Math.floor(Math.random() * charArrNumbers.length)
+    passwordArray.push(charArrNumbers[randomNumbers]);
+  }
+
+  if (wantsSpecials) {
+    var randomSpecials = Math.floor(Math.random() * charArrSpecials.length)
+    passwordArray.push(charArrSpecials[randomSpecials]);
+  }
+
+console.log(passwordArray);
+
+  //Fills the rest of the array with random characters from the selected categories.
+  for (var i = passwordArray.length; i < length; i++) {
     var randomIndex = Math.floor(Math.random() * characterPool.length);
     passwordArray.push(characterPool[randomIndex]);
   }
