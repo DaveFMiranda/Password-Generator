@@ -101,14 +101,16 @@ console.log(passwordArray);
 
   console.log(characterPool);
 
+
+return passwordArray.join("");
 }
 
 // Write password to the #password input
 function writePassword() {
-  var passwordArray = generatePassword();
+  var password = generatePassword();
   var passwordText = document.querySelector("#password");
 
-  passwordText.value = passwordArray;
+  passwordText.value = password;
 
 }
 
